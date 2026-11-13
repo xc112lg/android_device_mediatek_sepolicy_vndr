@@ -1,0 +1,2 @@
+BOARD_VENDOR_SEPOLICY_DIRS += \
+    $(MTK_SEPOLICY_PATH)/libperfmgr/vendor
