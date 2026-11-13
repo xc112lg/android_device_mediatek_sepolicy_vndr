@@ -1,0 +1,67 @@
+diff --git a/basic/non_plat/device.te b/basic/non_plat/device.te
+index 15e1e79..0f4f05c 100644
+--- a/basic/non_plat/device.te
++++ b/basic/non_plat/device.te
+@@ -254,7 +254,6 @@ type cam_vpu_block_device,dev_type;
+ type boot_para_block_device,dev_type;
+ type mtk_dfrc_device, dev_type;
+ type vbmeta_block_device, dev_type;
+-type alarm_device, dev_type;
+ type mdp_device, dev_type;
+ type mrdump_device, dev_type;
+ type kb_block_device,dev_type;
+diff --git a/basic/non_plat/power_off_alarm.te b/basic/non_plat/power_off_alarm.te
+deleted file mode 100644
+index 279febf..0000000
+--- a/basic/non_plat/power_off_alarm.te
++++ /dev/null
+@@ -1,9 +0,0 @@
+-type power_off_alarm, domain, mlstrustedsubject;
+-app_domain(power_off_alarm)
+-allow power_off_alarm app_api_service:service_manager find;
+-allow power_off_alarm system_app_data_file:dir create_dir_perms;
+-allow power_off_alarm system_app_data_file:{ file lnk_file } create_file_perms;
+-
+-# Purpose : support power-off alarm
+-allow power_off_alarm alarm_device:chr_file rw_file_perms;
+-allow power_off_alarm rtc_device:chr_file rw_file_perms;
+diff --git a/basic/non_plat/seapp_contexts b/basic/non_plat/seapp_contexts
+deleted file mode 100644
+index 23a9bc9..0000000
+--- a/basic/non_plat/seapp_contexts
++++ /dev/null
+@@ -1 +0,0 @@
+-user=system isPrivApp=true seinfo=platform name=com.qualcomm.qti.poweroffalarm type=system_app_data_file domain=power_off_alarm levelFrom=user
+diff --git a/basic/plat_private/power_off_alarm.te b/basic/plat_private/power_off_alarm.te
+new file mode 100644
+index 0000000..1ac077c
+--- /dev/null
++++ b/basic/plat_private/power_off_alarm.te
+@@ -0,0 +1,10 @@
++type power_off_alarm, domain, mlstrustedsubject;
++typeattribute power_off_alarm coredomain;
++app_domain(power_off_alarm)
++allow power_off_alarm app_api_service:service_manager find;
++allow power_off_alarm system_app_data_file:dir create_dir_perms;
++allow power_off_alarm system_app_data_file:{ file lnk_file } create_file_perms;
++
++# Purpose : support power-off alarm
++allow power_off_alarm alarm_device:chr_file rw_file_perms;
++allow power_off_alarm rtc_device:chr_file rw_file_perms;
+diff --git a/basic/plat_private/seapp_contexts b/basic/plat_private/seapp_contexts
+new file mode 100644
+index 0000000..23a9bc9
+--- /dev/null
++++ b/basic/plat_private/seapp_contexts
+@@ -0,0 +1 @@
++user=system isPrivApp=true seinfo=platform name=com.qualcomm.qti.poweroffalarm type=system_app_data_file domain=power_off_alarm levelFrom=user
+diff --git a/basic/plat_public/device.te b/basic/plat_public/device.te
+index 6ad5ed8..86f179b 100644
+--- a/basic/plat_public/device.te
++++ b/basic/plat_public/device.te
+@@ -3,3 +3,5 @@
+ # ==============================================
+ 
+ type mtd_device, dev_type;
++
++type alarm_device, dev_type;

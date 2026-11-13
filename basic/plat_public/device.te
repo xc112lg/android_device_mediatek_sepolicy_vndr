@@ -3,3 +3,5 @@
 # ==============================================
 
 type mtd_device, dev_type;
+
+type alarm_device, dev_type;
